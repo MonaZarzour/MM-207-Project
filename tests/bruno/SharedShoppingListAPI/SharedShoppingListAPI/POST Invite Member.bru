@@ -1,0 +1,23 @@
+meta {
+  name: POST Invite Member
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/lists/123/members
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "friend@example.com",
+    "role": "member"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
