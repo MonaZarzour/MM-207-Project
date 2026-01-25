@@ -1,0 +1,30 @@
+{
+  "name": "prosjekt",
+  "version": "1.0.0",
+  "description": "Shared Shopping List App",
+  "type": "module",
+  "main": "Server/src/main.js",
+  "scripts": {
+    "dev": "nodemon Server/src/main.js",
+    "start": "node Server/src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MonaZarzour/MM-207-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MonaZarzour/MM-207-Project/issues"
+  },
+  "homepage": "https://github.com/MonaZarzour/MM-207-Project#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodeman": "^1.1.2",
+    "nodemon": "^3.0.0"
+  }
+}
