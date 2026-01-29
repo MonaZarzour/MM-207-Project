@@ -1,0 +1,25 @@
+meta {
+  name: Create User
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/users
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "mona@example.com",
+    "password": "Pass1234!",
+    "displayName": "Mona",
+    "acceptTos": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
