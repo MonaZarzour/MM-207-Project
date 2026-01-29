@@ -10,9 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
-app.use("/api", listRoutes);
 app.use("/api", userRoutes);
 app.use("/api", sessionRoutes);
+app.use("/api/lists", listRoutes);
+app.get("/api/health", (req, res) =>
+  res.json({ ok: true, message: "API is running" }),
+);
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
