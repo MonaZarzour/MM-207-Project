@@ -1,10 +1,10 @@
 meta {
-  name: Delete Account
+  name: Edit Account
   type: http
-  seq: 9
+  seq: 10
 }
 
-delete {
+put {
   url: {{baseUrl}}/users/me
   body: json
   auth: inherit
@@ -12,6 +12,10 @@ delete {
 
 headers {
   Authorization: Bearer {{token}}
+}
+
+body:json {
+  { "displayName": "Mona" }
 }
 
 settings {

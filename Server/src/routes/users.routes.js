@@ -42,6 +42,32 @@ router.post("/users", async (req, res) => {
   }
 });
 
+// PUT /api/users  (edit)
+router.put("/users/me", requireAuth, (req, res) => {
+  const { displayName } = req.body;
+
+  if (!displayName || typeof displayName !== "string") {
+    return res.status(400).json({ message: "displayName is required" });
+  }
+  const user = req.user; // adjust if your project uses a different name
+  if (!user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  user.displayName = displayName;
+
+  return res.json({
+    user: {
+      id: user.id,
+      email: user.email,
+      displayName: user.displayName,
+      tosAcceptedAt: user.tosAcceptedAt,
+      tosVersion: user.tosVersion,
+      createdAt: user.createdAt,
+    },
+  });
+});
+
 // DELETE /api/users/me  (delete account + withdraw consent)
 router.delete("/users/me", requireAuth, (req, res) => {
   const userId = req.user.id;

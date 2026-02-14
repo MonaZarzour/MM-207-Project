@@ -1,15 +1,11 @@
-import { ShoppingListView } from "./views/ShoppingList_View.mjs";
+// File: Client/app.mjs
+import "./views/UserCreate_View.mjs";
+import "./views/UserEdit_View.mjs";
+import "./views/UserDelete_View.mjs";
 
-function startApp() {
-  const app = document.getElementById("app");
-
-  if (!app) {
-    console.error("❌ #app not found in Index.html");
-    return;
-  }
-
-  app.innerHTML = ShoppingListView();
-  console.log("✅ App started successfully");
-}
-
-startApp();
+document.getElementById("app").innerHTML = `
+  <h1>Shared Shopping List App</h1>
+  <user-create></user-create>
+  <user-edit></user-edit>
+  <user-delete></user-delete>
+`;
