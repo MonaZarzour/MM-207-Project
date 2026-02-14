@@ -1,4 +1,4 @@
-import { ShoppingListView } from "./Views/ShoppingList_View.js";
+import { ShoppingListView } from "./views/ShoppingList_View.mjs";
 
 function startApp() {
   const app = document.getElementById("app");

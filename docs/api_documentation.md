@@ -1,18 +1,24 @@
-Shared Shopping List API (REST’ish)
+Shared Shopping List API
 Overview
 
-This document describes the REST’ish API for the Shared Shopping List application.
-The API allows users to manage shared shopping lists, list items, and list members (sharing).
+This document describes the REST-style API for the Shared Shopping List application.
 
-Note:
+The API allows users to:
 
-User creation, login, and authentication are out of scope for this assignment and are not implemented.
+Create and authenticate accounts
 
-All endpoints assume a “current user” exists.
+Accept Terms of Service
 
-The API is scaffolded, meaning responses are mock/placeholder data and not persisted in a database yet.
+Create and manage shopping lists
 
-Base URL
+Add and manage list items
+
+Share lists with other users
+
+Delete their account
+
+Base URL:
+
 /api
 
 Common Response Codes
@@ -20,19 +26,67 @@ Status Meaning
 200 Request successful
 201 Resource created
 400 Bad request (missing or invalid input)
-401 Unauthorized (reserved for future auth)
+401 Unauthorized
 403 Forbidden (not a list member / insufficient rights)
 404 Resource not found
-Health Check
+Health
 GET /health
 
 Check that the API is running.
 
 Response
-
 {
 "ok": true,
 "message": "API is running"
+}
+
+Users
+POST /users
+
+Create a new user account.
+
+Request Body
+{
+"email": "user@example.com",
+"password": "password123",
+"acceptTos": true
+}
+
+Rules
+
+acceptTos must be true
+
+If missing or false → 400 Bad Request
+
+Response (201)
+{
+"id": "user_123",
+"email": "user@example.com",
+"tosAccepted": true
+}
+
+POST /login
+
+Authenticate a user.
+
+Request Body
+{
+"email": "user@example.com",
+"password": "password123"
+}
+
+Response (200)
+{
+"token": "jwt-or-session-token"
+}
+
+DELETE /users/:id
+
+Delete user account and associated data.
+
+Response (200)
+{
+"message": "Account deleted"
 }
 
 Lists
@@ -41,13 +95,11 @@ GET /lists
 Get all shopping lists the current user has access to.
 
 Response
-
 {
 "data": [
 { "id": "list_1", "title": "Weekly groceries", "role": "owner" },
 { "id": "list_2", "title": "Party shopping", "role": "member" }
-],
-"note": "Scaffold response"
+]
 }
 
 POST /lists
@@ -55,140 +107,95 @@ POST /lists
 Create a new shopping list.
 
 Request Body
-
 {
 "title": "Weekly groceries"
 }
 
 Response (201)
-
 {
-"data": {
 "id": "list_new",
 "title": "Weekly groceries"
-},
-"note": "Scaffold response"
 }
 
 GET /lists/:listId
 
 Get a specific shopping list.
-This endpoint is protected by middleware that checks list membership.
+
+Protected by requireListMember middleware.
 
 Response
-
 {
-"ok": true,
-"listId": "123",
-"access": {
-"listId": "123",
-"role": "member"
-},
-"note": "Scaffold response"
+"id": "list_1",
+"title": "Weekly groceries"
 }
 
-Items (Nested Resource)
-
-Items always belong to a specific list.
-
+Items
 GET /lists/:listId/items
 
 Get all items in a shopping list.
 
-Response
-
-{
-"listId": "123",
-"data": [
-{ "id": "item_1", "name": "Milk", "quantity": 2, "unit": "pcs", "done": false },
-{ "id": "item_2", "name": "Eggs", "quantity": 12, "unit": "pcs", "done": true }
-],
-"note": "Scaffold response"
-}
-
 POST /lists/:listId/items
 
-Add a new item to a shopping list.
+Add an item to a shopping list.
 
 Request Body
-
 {
 "name": "Milk",
 "quantity": 2,
 "unit": "pcs"
 }
 
-Response (201)
-
-{
-"listId": "123",
-"data": {
-"id": "item_new",
-"name": "Milk",
-"quantity": 2,
-"unit": "pcs",
-"done": false
-},
-"note": "Scaffold response"
-}
-
 Members (Sharing)
-
-Members represent users who have access to a shopping list.
-
 POST /lists/:listId/members
 
-Invite a new member to a shopping list by email.
+Invite a new member to a shopping list.
 
 Request Body
-
 {
 "email": "friend@example.com",
 "role": "member"
 }
 
-Response (201)
+Authorization
 
-{
-"listId": "123",
-"data": {
-"id": "member_new",
-"email": "friend@example.com",
-"role": "member"
-},
-"note": "Scaffold response (invite not implemented)"
-}
+List access is protected by custom Express middleware:
 
-Authorization Notes
+requireListMember
 
-Access control is handled by Express middleware.
+Validates that the current user is a member of the list
 
-Middleware validates list access before route handlers run.
+Returns 403 Forbidden if not authorized
 
-Role-based authorization (owner vs member) is planned but not fully implemented yet.
+Calls next() if access is allowed
 
-Testing the API
+Owner-only operations may use requireListOwner.
 
-A Bruno API test collection is included in the repository:
+Terms of Service & Privacy
+
+The API requires users to actively accept the Terms of Service during account creation.
+
+Consent is stored on the server.
+
+Users may delete their account at any time.
+
+Relevant documents:
+
+docs/terms-of-service.md
+
+docs/privacy-policy.md
+
+Testing
+
+Bruno test collection is included in:
 
 tests/bruno/SharedShoppingListAPI
 
 To test:
 
-Start the server with npm run dev
+Run npm run dev
 
 Open Bruno
 
-Open the collection folder
-
 Use the local environment
 
-Implementation Status
-
-This API is intentionally scaffolded:
-
-No database persistence yet
-
-Responses are mock data
-
-Structure and routes are designed for future expansion
+Run the collection
