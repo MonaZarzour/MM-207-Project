@@ -60,9 +60,15 @@ If missing or false → 400 Bad Request
 
 Response (201)
 {
+"user": {
 "id": "user_123",
 "email": "user@example.com",
-"tosAccepted": true
+"displayName": "Optional name",
+"tosAcceptedAt": "2026-02-14T12:00:00.000Z",
+"tosVersion": "1.0",
+"createdAt": "2026-02-14T12:00:00.000Z"
+},
+"token": "session-token"
 }
 
 POST /login
@@ -77,16 +83,50 @@ Request Body
 
 Response (200)
 {
-"token": "jwt-or-session-token"
+"user": {
+"id": "user_123",
+"email": "user@example.com",
+"displayName": "Optional name"
+},
+"token": "session-token"
 }
 
-DELETE /users/:id
+DELETE /users/me
 
-Delete user account and associated data.
+Delete the currently authenticated user account.
+
+Requires Authorization header.
+
+Header:
+Authorization: Bearer <token>
 
 Response (200)
 {
+"ok": true,
 "message": "Account deleted"
+}
+
+PUT /users/me
+
+Update the currently authenticated user.
+
+Requires Authorization header.
+
+Header:
+Authorization: Bearer <token>
+
+Request Body
+{
+"displayName": "New Name"
+}
+
+Response (200)
+{
+"user": {
+"id": "user_123",
+"email": "user@example.com",
+"displayName": "New Name"
+}
 }
 
 Lists
@@ -169,6 +209,13 @@ Returns 403 Forbidden if not authorized
 Calls next() if access is allowed
 
 Owner-only operations may use requireListOwner.
+Authenticated endpoints require a session token.
+
+The token must be sent in the HTTP header:
+
+Authorization: Bearer <token>
+
+The token is returned during account creation and login.
 
 Terms of Service & Privacy
 

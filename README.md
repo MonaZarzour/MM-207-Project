@@ -8,11 +8,10 @@ The application includes Terms of Service and a Privacy Policy. Users must activ
 Features
 User & Consent
 
-Create user account (requires Terms of Service consent)
-
-Login
-
-Delete account
+Create user account (requires explicit Terms of Service consent)
+Login (session token based authentication)
+Edit profile (update display name)
+Delete account (withdraw consent)
 
 Lists & Sharing
 
@@ -30,12 +29,26 @@ Vanilla JavaScript (client)
 
 Bruno (API testing)
 
+Client Architecture
+
+The client follows a modular ES module structure:
+
+- views/ – UI (custom web components)
+- controllers/ – application logic
+- data/ – models and state (including token handling)
+- modules/ – utilities (the single fetch call lives in modules/fetchManager.mjs)
+
+All API calls use relative URLs and authentication tokens are attached automatically.
+
 Project Structure
 Client/
 index.html
-style.css
-Modules/
-Views/
+app.mjs
+app.css
+controllers/
+data/
+modules/
+views/
 ...client modules...
 
 Server/
@@ -65,8 +78,10 @@ Start the server (development):
 npm run dev
 
 The API will run on:
-
 http://localhost:3000
+
+The client is served statically by the server and can be accessed at:
+http://localhost:3000/index.html
 
 Documentation
 
@@ -90,6 +105,8 @@ If the user is a member → next()
 If not → returns 403 Forbidden
 
 This ensures list access is enforced server-side.
+
+Authentication middleware (requireAuth) is also used for user-specific endpoints such as PUT /users/me and DELETE /users/me.
 
 Testing (Bruno)
 
