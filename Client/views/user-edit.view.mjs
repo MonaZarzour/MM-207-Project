@@ -1,5 +1,4 @@
-// File: Client/views/UserEdit_View.mjs
-import { userController } from "../controllers/userController.mjs";
+// File: client/views/user-edit.view.mjs
 
 export class UserEditView extends HTMLElement {
   connectedCallback() {
@@ -27,15 +26,15 @@ export class UserEditView extends HTMLElement {
       msg.textContent = "Updating...";
 
       const fd = new FormData(form);
+      const payload = {
+        displayName: String(fd.get("displayName")),
+      };
 
-      try {
-        const result = await userController.editMe({
-          displayName: String(fd.get("displayName")),
-        });
-        msg.textContent = `Updated displayName: ${result.user?.displayName ?? "OK"}`;
-      } catch (err) {
-        msg.textContent = `Error: ${err.message}`;
-      }
+      this.dispatchEvent(new CustomEvent("USER_EDIT_SUBMIT", {
+        detail: { payload, msg },
+        bubbles: true,
+        composed: true
+      }));
     });
   }
 }

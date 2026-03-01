@@ -1,7 +1,8 @@
-// File: Client/app.mjs
-import "./views/UserCreate_View.mjs";
-import "./views/UserEdit_View.mjs";
-import "./views/UserDelete_View.mjs";
+// File: client/app.mjs
+import "./views/user-create.view.mjs";
+import "./views/user-edit.view.mjs";
+import "./views/user-delete.view.mjs";
+import "./controllers/user.controller.mjs";
 
 document.getElementById("app").innerHTML = `
   <h1>Shared Shopping List App</h1>

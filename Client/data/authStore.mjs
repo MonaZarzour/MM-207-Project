@@ -1,4 +1,4 @@
-// File: Client/data/authStore.mjs
+// File: client/data/authStore.mjs
 let token = null;
 
 export const authStore = {

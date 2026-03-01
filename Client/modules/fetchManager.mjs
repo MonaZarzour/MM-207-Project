@@ -1,4 +1,4 @@
-// File: Client/modules/fetchManager.mjs
+// File: client/modules/fetchManager.mjs
 import { authStore } from "../data/authStore.mjs";
 
 export async function request(url, options = {}) {

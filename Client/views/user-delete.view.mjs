@@ -1,5 +1,4 @@
-// File: Client/views/UserDelete_View.mjs
-import { userController } from "../controllers/userController.mjs";
+// File: client/views/user-delete.view.mjs
 
 export class UserDeleteView extends HTMLElement {
   connectedCallback() {
@@ -18,12 +17,11 @@ export class UserDeleteView extends HTMLElement {
     btn.addEventListener("click", async () => {
       msg.textContent = "Deleting...";
 
-      try {
-        await userController.deleteAccount();
-        msg.textContent = "Deleted account: OK";
-      } catch (err) {
-        msg.textContent = `Error: ${err.message}`;
-      }
+      this.dispatchEvent(new CustomEvent("USER_DELETE_SUBMIT", {
+        detail: { msg },
+        bubbles: true,
+        composed: true
+      }));
     });
   }
 }

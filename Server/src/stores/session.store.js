@@ -1,4 +1,4 @@
-// File: Server/src/stores/sessions.store.js
+// File: server/src/stores/session.store.js
 import crypto from "crypto";
 
 const sessionsByToken = new Map(); // token -> { userId, createdAt }

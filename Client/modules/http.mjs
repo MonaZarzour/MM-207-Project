@@ -1,4 +1,4 @@
-// File: Client/modules/http.mjs
+// File: client/modules/http.mjs
 import { request } from "./fetchManager.mjs";
 
 export const http = {

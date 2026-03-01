@@ -1,4 +1,4 @@
-// File: Server/src/services/password.service.js
+// File: server/src/services/password.service.js
 import crypto from "crypto";
 
 const KEYLEN = 64;

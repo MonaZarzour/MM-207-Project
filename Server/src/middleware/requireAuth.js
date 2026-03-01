@@ -1,8 +1,8 @@
-// File: Server/src/middleware/requireAuth.js
-import { getSession } from "../stores/sessions.store.js";
-import { getUserById, sanitizeUser } from "../stores/users.store.js";
+// File: server/src/middleware/requireAuth.js
+import { getSession } from "../stores/session.store.js";
+import { getUserById, sanitizeUser } from "../stores/user.store.js";
 
-export function requireAuth(req, res, next) {
+export async function requireAuth(req, res, next) {
   const header = req.headers.authorization || "";
   const [type, token] = header.split(" ");
 
@@ -15,10 +15,14 @@ export function requireAuth(req, res, next) {
   const session = getSession(token);
   if (!session) return res.status(401).json({ error: "Invalid session" });
 
-  const user = getUserById(session.userId);
-  if (!user) return res.status(401).json({ error: "User not found" });
+  try {
+    const user = await getUserById(session.userId);
+    if (!user) return res.status(401).json({ error: "User not found" });
 
-  req.user = sanitizeUser(user);
-  req.authToken = token;
-  next();
+    req.user = sanitizeUser(user);
+    req.authToken = token;
+    next();
+  } catch (err) {
+    return res.status(500).json({ error: "Database error" });
+  }
 }

@@ -1,5 +1,4 @@
-// File: Client/views/UserCreate_View.mjs
-import { userController } from "../controllers/userController.mjs";
+// File: client/views/user-create.view.mjs
 
 export class UserCreateView extends HTMLElement {
   connectedCallback() {
@@ -36,19 +35,17 @@ export class UserCreateView extends HTMLElement {
       msg.textContent = "Creating...";
 
       const fd = new FormData(form);
+      const payload = {
+        email: String(fd.get("email")),
+        password: String(fd.get("password")),
+        acceptTos: fd.get("acceptTos") === "on",
+      };
 
-      try {
-        const created = await userController.createUser({
-          email: String(fd.get("email")),
-          password: String(fd.get("password")),
-          acceptTos: fd.get("acceptTos") === "on",
-        });
-
-        msg.textContent = `Created user: ${created.user?.email ?? created.user?.id ?? "OK"}`;
-        form.reset();
-      } catch (err) {
-        msg.textContent = `Error: ${err.message}`;
-      }
+      this.dispatchEvent(new CustomEvent("USER_CREATE_SUBMIT", {
+        detail: { payload, form, msg },
+        bubbles: true,
+        composed: true
+      }));
     });
   }
 }
