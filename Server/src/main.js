@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve Client folder
-app.use(express.static(path.join(__dirname, "../../client")));
+app.use(express.static(path.join(__dirname, "../../Client")));
 
 app.use("/api", userRoutes);
 app.use("/api", sessionRoutes);
