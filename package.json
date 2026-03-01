@@ -5,8 +5,8 @@
   "type": "module",
   "main": "server/src/main.js",
   "scripts": {
-    "dev": "nodemon server/src/main.js",
-    "start": "node server/src/main.js"
+    "dev": "nodemon Server/src/main.js",
+    "start": "node Server/src/main.js"
   },
   "repository": {
     "type": "git",
