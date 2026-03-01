@@ -1,6 +1,6 @@
 # Shared Shopping List App
 
-## Overview
+**Live Web Service:** [https://mm-207-project.onrender.com](https://mm-207-project.onrender.com)
 Shared Shopping List is a full-stack application where users can create shopping lists, add items, and share lists with other users. The backend exposes a REST-style API, and the frontend is a modular JavaScript client.
 
 The application includes Terms of Service and a Privacy Policy. Users must actively consent to the Terms of Service when creating an account and can delete their account at any time.
