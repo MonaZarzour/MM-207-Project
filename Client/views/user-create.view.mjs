@@ -17,7 +17,7 @@ export class UserCreateView extends HTMLElement {
 
           <label class="row">
             <input name="acceptTos" type="checkbox" required />
-            I accept the Terms of Service
+            <span>I accept the <a href="/api_documentation.md" target="_blank">Terms of Service</a></span>
           </label>
 
           <button type="submit">Create</button>
