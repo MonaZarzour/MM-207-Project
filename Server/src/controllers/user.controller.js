@@ -1,6 +1,7 @@
 // File: server/src/controllers/user.controller.js
 import { UserService } from "../services/user.service.js";
 import { createSession, deleteSessionsForUser } from "../stores/session.store.js";
+import { t } from "../utils/i18n.js";
 
 export const UserController = {
     async register(req, res) {
@@ -10,14 +11,14 @@ export const UserController = {
             return res.status(201).json({ user, token });
         } catch (e) {
             const status = e.status || 400;
-            return res.status(status).json({ error: e.message || "Server error" });
+            return res.status(status).json({ error: t(req, e.message || "Server error") });
         }
     },
 
     async editMe(req, res) {
         const user = req.user;
         if (!user) {
-            return res.status(401).json({ message: "Unauthorized" });
+            return res.status(401).json({ error: t(req, "Unauthorized") });
         }
 
         try {
@@ -33,7 +34,7 @@ export const UserController = {
                 },
             });
         } catch (e) {
-            return res.status(400).json({ message: e.message });
+            return res.status(400).json({ error: t(req, e.message) });
         }
     },
 
@@ -45,7 +46,7 @@ export const UserController = {
             await UserService.deleteAccount(userId);
             return res.json({ ok: true, message: "Account deleted" });
         } catch (e) {
-            return res.status(404).json({ error: e.message });
+            return res.status(404).json({ error: t(req, e.message) });
         }
     },
 };

@@ -1,5 +1,6 @@
 // File: server/src/controllers/session.controller.js
 import { SessionService } from "../services/session.service.js";
+import { t } from "../utils/i18n.js";
 
 export const SessionController = {
     async login(req, res) {
@@ -10,7 +11,7 @@ export const SessionController = {
             return res.json({ token });
         } catch (e) {
             const status = e.message === "Invalid credentials" ? 401 : 400;
-            return res.status(status).json({ error: e.message });
+            return res.status(status).json({ error: t(req, e.message) });
         }
     }
 };

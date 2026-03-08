@@ -1,20 +1,22 @@
 // File: client/views/user-edit.view.mjs
 
+import { t } from "../utils/i18n.mjs";
+
 export class UserEditView extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <section class="card">
-        <h2>Edit User (me)</h2>
+        <h2>${t("editUser")}</h2>
 
         <form id="form">
-          <label>Display Name
+          <label>${t("displayName")}
             <input name="displayName" required />
           </label>
 
-          <button type="submit">Update</button>
+          <button type="submit">${t("updateBtn")}</button>
         </form>
 
-        <p id="msg" class="muted"></p>
+        <p id="msg" class="muted" aria-live="polite" aria-atomic="true"></p>
       </section>
     `;
 
@@ -23,7 +25,7 @@ export class UserEditView extends HTMLElement {
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      msg.textContent = "Updating...";
+      msg.textContent = t("updating");
 
       const fd = new FormData(form);
       const payload = {

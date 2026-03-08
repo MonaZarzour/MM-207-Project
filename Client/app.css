@@ -1,47 +1,262 @@
 /* File: Client/app.css */
+:root {
+  /* Color Palette */
+  --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  --surface-bg: rgba(255, 255, 255, 0.75);
+  --surface-border: rgba(255, 255, 255, 0.4);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 25px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    --surface-bg: rgba(30, 41, 59, 0.7);
+    --surface-border: rgba(255, 255, 255, 0.1);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 25px -3px rgb(0 0 0 / 0.5);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-    font-family: system-ui, sans-serif;
-    margin: 0;
+  font-family: 'Outfit', system-ui, sans-serif;
+  margin: 0;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 #app {
-    max-width: 720px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--primary) 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Glassmorphism Cards */
 .card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 1rem;
-    margin-top: 1rem;
+  background: var(--surface-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-top: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: slideUp 0.5s ease-out;
 }
 
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.15);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Forms and Inputs */
 label {
-    display: block;
-    margin: 0.5rem 0;
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
-input {
-    width: 100%;
-    padding: 0.5rem;
+input, select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.row input {
-    width: auto;
+.row label { margin: 0; }
+.row input[type="checkbox"] {
+  width: auto;
+  transform: scale(1.2);
+  accent-color: var(--primary);
+  cursor: pointer;
 }
 
+/* Buttons */
 button {
-    padding: 0.6rem 1rem;
-    cursor: pointer;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
+  margin-top: 1.25rem;
 }
 
+button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button.danger {
+  background: var(--danger);
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.25);
+}
+
+button.danger:hover {
+  background: var(--danger-hover);
+  box-shadow: 0 6px 12px rgba(239, 68, 68, 0.3);
+}
+
+button.outline-btn, button.text-btn {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--surface-border);
+  box-shadow: none;
+}
+
+button.text-btn {
+  border: none;
+  padding: 0.5rem;
+  margin: 0 0 1rem 0;
+  color: var(--primary);
+}
+
+button.outline-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+button.text-btn:hover {
+  background: transparent;
+  text-decoration: underline;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Utilities */
 .muted {
-    color: #444;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+a:hover { text-decoration: underline; }
+
+/* Lists UI Specifics */
+.lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.list-item-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--surface-border);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.list-item-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+  transform: translateY(-3px);
+}
+
+.list-item-card h3 { margin: 0 0 0.5rem 0; }
+.list-item-card button { width: 100%; margin-top: 1.5rem; }
+
+.item-card {
+  padding: 1rem;
+  border-bottom: 1px solid var(--surface-border);
+  animation: fadeIn 0.4s ease-out forwards;
+}
+.item-card:last-child { border-bottom: none; }
+
+.item-done {
+  text-decoration: line-through;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 1rem;
+  background: var(--surface-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border);
+  user-select: none;
 }

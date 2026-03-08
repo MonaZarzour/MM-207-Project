@@ -1,39 +1,67 @@
 // File: server/src/services/list.service.js
-export class NoteList {
-    constructor(listId, data, note) {
-        this.listId = listId;
-        this.note = note;
-        this.data = data;
-    }
-}
+import {
+    createList,
+    getListsForUser,
+    getListItems,
+    createListItem,
+    addListMember,
+    updateListItemStatus,
+    updateListItemQuantity,
+    getListMembers,
+    updateMemberRole,
+    removeListMember
+} from "../stores/list.store.js";
+import { getUserByEmail } from "../stores/user.store.js";
 
 export const ListService = {
-    getAllLists() {
-        return [
-            { id: "list_1", title: "Weekly groceries", role: "owner" },
-            { id: "list_2", title: "Party shopping", role: "member" },
-        ];
+    async getAllLists(userId) {
+        return await getListsForUser(userId);
     },
 
-    createList(title) {
+    async createList(title, userId) {
         if (!title) throw new Error("title is required");
-        return { id: "list_new", title };
+        return await createList(title, userId);
     },
 
-    getListItems(listId) {
-        return [
-            { id: "item_1", name: "Milk", quantity: 2, unit: "pcs", done: false },
-            { id: "item_2", name: "Eggs", quantity: 12, unit: "pcs", done: true },
-        ];
+    async getListItems(listId) {
+        return await getListItems(listId);
     },
 
-    createListItem(listId, { name, quantity = 1, unit = "pcs" }) {
+    async createListItem(listId, { name, quantity = 1, unit = "pcs" }) {
         if (!name) throw new Error("name is required");
-        return { id: "item_new", name, quantity, unit, done: false };
+        return await createListItem(listId, { name, quantity, unit });
     },
 
-    createListMember(listId, { email, role = "member" }) {
+    async toggleItemDone(itemId, listId, done) {
+        return await updateListItemStatus(itemId, listId, done);
+    },
+
+    async updateItemQuantity(itemId, listId, quantity) {
+        return await updateListItemQuantity(itemId, listId, quantity);
+    },
+
+    async createListMember(listId, { email, role = "viewer" }) {
         if (!email) throw new Error("email is required");
-        return new NoteList(listId, { id: "member_new", email, role }, "Scaffold response (invite not implemented)");
+
+        const user = await getUserByEmail(email);
+        if (!user) {
+            throw new Error("User with that email not found");
+        }
+
+        return await addListMember(listId, user.id, role);
+    },
+
+    async getMembers(listId) {
+        return await getListMembers(listId);
+    },
+
+    async updateMemberRole(listId, userId, role) {
+        const validRoles = ["admin", "editor", "viewer"];
+        if (!validRoles.includes(role)) throw new Error("Invalid role");
+        return await updateMemberRole(listId, userId, role);
+    },
+
+    async removeMember(listId, userId) {
+        return await removeListMember(listId, userId);
     }
 };

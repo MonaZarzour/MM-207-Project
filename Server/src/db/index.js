@@ -27,8 +27,37 @@ export async function initDb() {
       )
     `);
 
-        // We could add other tables here (e.g. lists, lists_items, sessions) 
-        // to migrate everything to PostgreSQL in the future.
+        // Create lists
+        await client.query(`
+          CREATE TABLE IF NOT EXISTS lists (
+            id VARCHAR(255) PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // Create list_members
+        await client.query(`
+          CREATE TABLE IF NOT EXISTS list_members (
+            list_id VARCHAR(255) REFERENCES lists(id) ON DELETE CASCADE,
+            user_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
+            role VARCHAR(50) DEFAULT 'viewer',
+            PRIMARY KEY (list_id, user_id)
+          )
+        `);
+
+        // Create list_items
+        await client.query(`
+          CREATE TABLE IF NOT EXISTS list_items (
+            id VARCHAR(255) PRIMARY KEY,
+            list_id VARCHAR(255) REFERENCES lists(id) ON DELETE CASCADE,
+            name VARCHAR(255) NOT NULL,
+            quantity INTEGER DEFAULT 1,
+            unit VARCHAR(50) DEFAULT 'pcs',
+            done BOOLEAN DEFAULT false,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
 
         console.log("Database initialized successfully.");
     } catch (err) {
