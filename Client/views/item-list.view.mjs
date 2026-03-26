@@ -13,7 +13,7 @@ export class ItemListView extends HTMLElement {
             await this.render();
         }
         if (name === 'role') {
-            this.role = newValue;
+            this.userRole = newValue;
         }
     }
 
@@ -30,7 +30,7 @@ export class ItemListView extends HTMLElement {
 
         const itemsHtml = items.map(item => `
       <div class="item-card row" style="align-items: center;">
-        <input type="checkbox" class="item-done-cb" data-id="${item.id}" ${item.done ? "checked" : ""} ${this.role === 'viewer' ? 'disabled' : ''} />
+        <input type="checkbox" class="item-done-cb" data-id="${item.id}" ${item.done ? "checked" : ""} ${this.userRole === 'viewer' ? 'disabled' : ''} />
         <span class="${item.done ? 'item-done' : ''}" style="flex: 1;">${item.name} (${item.quantity} ${item.unit})</span>
       </div>
     `).join("");
@@ -40,7 +40,7 @@ export class ItemListView extends HTMLElement {
         <button id="back-btn" class="text-btn">&larr; ${t("backToLists")}</button>
         <h2>${t("viewItems")}</h2>
         
-        ${this.role !== 'viewer' ? `
+        ${this.userRole !== 'viewer' ? `
         <form id="add-item-form" class="row">
           <input name="name" placeholder="${t("itemName")}" aria-label="${t("itemName")}" required style="flex: 2" />
           <input name="quantity" type="number" min="1" value="1" placeholder="${t("qty")}" aria-label="${t("qty")}" style="flex: 1" />
@@ -53,7 +53,7 @@ export class ItemListView extends HTMLElement {
           ${itemsHtml.length ? itemsHtml : `<p class="muted">${t("noItemsYet")}</p>`}
         </div>
 
-        ${this.role === 'admin' ? `
+        ${this.userRole === 'admin' ? `
         <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
           <button id="share-btn" class="outline-btn">${t("manageList")}</button>
         </div>
@@ -67,7 +67,7 @@ export class ItemListView extends HTMLElement {
             this.dispatchEvent(new CustomEvent("BACK_TO_LISTS", { bubbles: true, composed: true }));
         });
 
-        if (this.role !== 'viewer') {
+        if (this.userRole !== 'viewer') {
             this.querySelector("#add-item-form")?.addEventListener("submit", async (e) => {
                 e.preventDefault();
                 const msg = this.querySelector("#item-msg");
